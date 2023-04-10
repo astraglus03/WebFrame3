@@ -13,5 +13,6 @@ class Post(models.Model): # 일종의 DB구조, field 설정하는 부분
     def __str__(this):
         return f'[{this.pk}]{this.title}' # 이게f'' 장고에서 문자열임.
 
-
+    def get_absolute_url(self):
+        return f'/blog/{self.pk}/'
 
