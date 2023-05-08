@@ -34,6 +34,8 @@ class Post(models.Model):
     # null=True -> null값이 들어가도 된다는 의미 / on_delete=SET_NULL은 삭제된 정보는 null로 처리함 이때 null=True로 되어있어야함
     # on_delete=models.CASCADE # 정보 싹다 삭제
 
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
+
     def __str__(self):
         return f'[{self.pk}]{self.title} :: {self.author}'
 
