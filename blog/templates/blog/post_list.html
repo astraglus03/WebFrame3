@@ -2,7 +2,10 @@
 
     {% block main_area %}
         <!-- Blog post-->
-        <h1>Blog</h1>
+        <h1>Blog
+            {% if category %}<span class="badge badge-secondary">{{category}}</span>
+            {% endif %}
+        </h1>
         {% if post_list.exists %}
         {% for p in post_list %}
         <div class="card mb-4" id="post-{{p.pk}}">
@@ -27,10 +30,18 @@
                 {% endif %}
 
                 <p class="card-text">{{ p.content | truncatechars:45}}</p> <!-- words 단어당 -->
+                <!--tag area-->
+                {% if p.tags.exists %}
+                <i class="fas fa-tags"></i>
+                {% for tag in p.tags.all %}
+                <span class="badge badge-pill badge-light">{{tag}}</span>
+                {% endfor %}
+                <br/><br/>
+                {% endif %}
                 <a class="btn btn-primary" href="{{ p.get_absolute_url }}">Read more →</a>
             </div>
             <div class="card-footer text-muted">
-                Posted on {{p.created_at}} by <a href="#">{{p.author | upper }}</a>
+                Posted on {{p.created_at}} by <a href="#">{{p.author | lower }}</a>
             </div>
         </div>
         {% endfor %}

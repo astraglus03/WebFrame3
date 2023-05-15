@@ -27,41 +27,12 @@
 <div class="container my-4"> <!-- 마진을 의미, 위 아래에 중간 정도의 크기 mt(위), mb(아래), ml(오른쪽), mr(오른쪽) -->
     <!-- mx(수평), my(수직) -->
     <div class="row">
-        <div class="col-sm-8" id="main-area">
+        <div class="col-sm-12" id="main-area">
             {% block main_area %}
 
             {% endblock %}
         </div>
-        <!-- Search widget-->
-        <div class="col-sm-4">
-            <div class="card mb-4">
-                <div class="card-header">Search</div>
-                <div class="card-body">
-                    <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Enter search term..."
-                               aria-label="Enter search term..." aria-describedby="button-search"/>
-                        <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-                    </div>
-                </div>
-            </div>
-            <!-- Categories widget-->
-            <div class="card mb-4" id="categories-card">
-                <div class="card-header">Categories</div>
-                <div class="card-body">
-                    <div class="row">
-                        <!--post_list(post),categories,no_category_post_count-->
-                        <ul> <!-- categories -->
-                            {% for category in categories %}
-                            <li><a href="{{category.get_absolute_url}}">{{ category }} ({{ category.post_set.count}})</a></li> <!--카테고리부분 post 검색한 부분임-->
-                            {% endfor %}
-                            <li><a href="/blog/category/no_category/">미분류 ({{ no_category_post_count }})</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</div>
 </div>
 
 {% include 'blog/footer.html' %}
