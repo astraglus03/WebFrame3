@@ -1,6 +1,15 @@
 {% extends 'blog/base.html' %}
 
     {% block main_area %}
+        {% if user.is_authenticated %}
+            {% if user.is_superuser or user.is_staff %}
+                <a class="btn btn-info btn-sm float-right" href="/blog/create_post/" role="button">
+                    <i class="fas fa-pen"></i>&nbsp;&nbsp;New Post
+                </a>
+            {% endif %}
+        {% endif %}
+<!-- 안에 if 제거시 로그인만 하면 되고 밖에 if 까지 제거시 그냥 노출됌. -->
+
         <!-- Blog post-->
         <h1>Blog
             {% if category %}<span class="badge badge-secondary">{{category}}</span>
@@ -29,7 +38,7 @@
                 <h5 class="text-muted">{{ p.hook_test }}</h5>
                 {% endif %}
 
-                <p class="card-text">{{ p.content | truncatechars:45}}</p> <!-- words 단어당 -->
+                <p class="card-text">{{ p.content | linebreaksbr | truncatechars:45}}</p> <!-- words 단어당 -->
                 <!--tag area-->
                 {% if p.tags.exists %}
                 <i class="fas fa-tags"></i>
@@ -46,7 +55,7 @@
         </div>
         {% endfor %}
         {% else %}
-        <h3>아직 글이 없습니다.</h3>
+        <h3>아직 게시물이 없습니다.</h3>
         {% endif %}
         <!-- Pagination 밑에 번호 1,2,3,..-->
         <nav aria-label="Pagination">

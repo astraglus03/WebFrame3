@@ -1,8 +1,12 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 from .models import Post, Category, Tag
-from django.views.generic import ListView, DetailView,CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 # Create your views here.
+
+def csrf_failure(request,reason=""):
+    return redirect('/blog/')
 
 # CBV
 class PostList(ListView):
@@ -61,23 +65,39 @@ def category_page(request, slug):  # 프로그래밍, 문화-예술, 웹개발, 
         }
     )
 
-class PostCreate(LoginRequiredMixin,UserPassesTestMixin, CreateView):
+# /blog/create_post/
+class PostCreate(LoginRequiredMixin,UserPassesTestMixin, CreateView): # UserPassesTestMixin <- 유저가 로그인 되어있는지 확인하는 것.
 
     model=Post
     fields=['title','hook_text','content', 'head_image', 'file_upload', 'category','tags']
-    # template_name=post_form.html
+    # template_name=post_form.html {form}
 
     def test_func(self):
-        return self.request.user.is_superuser or self.request.user.is_staff
+        return self.request.user.is_superuser or self.request.user.is_staff # user가 관리자 계정 or 스태프인지 확인후 접근가능 -> create_post 접근
 
     def form_valid(self,form):
-        current_user=self.request.user
-        if(current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser)):
+        current_user=self.request.user # 로그인 되어있는 유저 / 로그인안하면 null
+        if(current_user.is_authenticated and (current_user.is_staff or current_user.is_superuser)): # 로그인만 할지 슈퍼유저,스태프까지 할지 결정. 지워도 됌.
             form.instance.author=current_user
+            # 유저를 안채울거면 없어도 된다.
             # not tag
-            return super(PostCreate,self).form_valid(form)
+            return super(PostCreate,self).form_valid(form) # 상위 생성자 호출하기.
         else:
             return redirect('/blog/') # 강제적으로 '/blog/'로 보내버림
+
+# blog/update_post/<int:pk>
+class PostUpdate(LoginRequiredMixin,UpdateView):
+    model=Post
+    fields=['title','hook_text','content', 'head_image', 'file_upload', 'category','tags']
+
+    # 기본 템플릿 이름: post_form.html // 위에 PostCreate와 공유를 하게 되서 문제 발생 그래서 다른 템플릿 적용
+    template_name= "blog/post_update_form.html"
+
+    def dispatch(self,request,*args,**kwargs):
+        if request.user.is_authenticated and request.user == self.get_object().author: # self.get_object() detail에서 글까지 보여주는 부분이고 그 작성자가 앞에랑 같냐고 하는 코드
+            return super (PostUpdate,self).dispatch(request,*args,**kwargs)
+        else:
+            return PermissionDenied
 
 
 

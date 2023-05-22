@@ -1,17 +1,17 @@
 {% extends 'blog/base_full_width.html' %}
 
-{% load crispy_forms_tags %} <!-- crispy bootstrap4 적용-->
+{% load crispy_forms_tags %}
 
   {% block head_title %}
-      Create Post- Blog
+     Edit Post- Blog
   {% endblock %}
     {% block main_area %}
-    <h1>Create New Post</h1>
+    <h1>Edit Post</h1>
     <hr/>
     <form method="post" enctype="multipart/form-data">{% csrf_token %}
-
-            {{form | crispy}}
-
+        <table>
+            {{form | crispy}} <!-- table 있어도 되고 없어도 문제없이 잘 동작함 그냥 {{form | crispy}} 해줘도 된다 -->
+        </table>
         <button type="submit" class="btn btn-primary float-right">Submit</button>
     </form>
     {% endblock %}
