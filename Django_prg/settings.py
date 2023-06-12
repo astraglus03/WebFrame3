@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "allauth", #로그인 자동으로 하게
     "allauth.account",
     "allauth.socialaccount",
-    "allauth.socialaccount.providers.google",
+    "allauth.socialaccount.providers.google", # 구글 로그인하도록 제공하는것.
 
     "blog",
     "single_pages",
@@ -130,6 +130,6 @@ AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',
 
 SITE_ID = 1
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-# LOGIN_REDIRECT_URL = "/blog/"
+ACCOUNT_EMAIL_REQUIRED = True # 이메일 주소 필수
+ACCOUNT_EMAIL_VERIFICATION = 'none' # 이메일 인증메일
+LOGIN_REDIRECT_URL = "/blog/" # 로그인하면 보여줄 페이지 지정

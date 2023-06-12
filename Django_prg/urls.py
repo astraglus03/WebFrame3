@@ -24,8 +24,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('',include('single_pages.urls')),
     path('exam/',include('exam.urls')),
-    path('accounts/', include('allauth.urls')),
-
+    path('accounts/', include('allauth.urls')), # logout눌렀을때 페이지 allauth가 처리를 해주고 있음.
 ]
 
 urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

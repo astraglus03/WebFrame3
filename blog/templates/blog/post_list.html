@@ -12,6 +12,9 @@
 
         <!-- Blog post-->
         <h1>Blog
+            {% if search_info %}
+            <small class="text-muted">{{search_info}}</small>
+            {% endif %}
             {% if category %}<span class="badge badge-secondary">{{category}}</span>
             {% endif %}
         </h1>
@@ -57,18 +60,38 @@
         {% else %}
         <h3>아직 게시물이 없습니다.</h3>
         {% endif %}
+
+        {% if is_paginated %}
         <!-- Pagination 밑에 번호 1,2,3,..-->
         <nav aria-label="Pagination">
             <hr class="my-0"/>
             <ul class="pagination justify-content-center my-4">
-                <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a>
-                </li>
-                <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
-                <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
-                <li class="page-item"><a class="page-link" href="#!">15</a></li>
-                <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+            {% if page_obj.has_previous %}
+            <!-- paginator, page_obj paginate를 도와주는것. -->
+            <!-- paginator.page_range:페이지 길이 알려줌 / page_obj.nmumber: 현재 번호 / page_obj.previous_page_number: 이전번호 -->
+                <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}"><--Newer</a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#" aria-disabled="true">Newer</a></li>
+            {% endif %}
+
+            <!-- page numbers 입력하면된다. -->
+             {% for i in paginator.page_range %} <!-- 숫자 범위 알려줌 -->
+                {% if i == page_obj.number %} <!-- 번호랑 똑같으면 비활성화 시키기 -->
+                <li class="page-item active"><a class="page-link" href="#!">{{i}}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                {% endif %}
+             {% endfor %}
+
+
+            {% if page_obj.has_next %}
+            <!-- paginator, page_obj paginate를 도와주는것. -->
+            <!-- paginator.page_range:페이지 길이 알려줌 / page_obj.nmumber: 현재 번호 / page_obj.previous_page_number: 이전번호 -->
+                <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Older-></a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#" aria-disabled="true">Older</a></li>
+            {% endif %}
             </ul>
         </nav>
+        {% endif %}
     {% endblock %}

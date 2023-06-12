@@ -63,3 +63,17 @@ class Post(models.Model):
 
     def get_file_ext(self):
         return self.get_file_name().split('.')[-1]  # -1은 마지막 인덱스 ex) txt / xlsx / docx
+
+
+class Comment(models.Model):
+    post=models.ForeignKey(Post,on_delete=models.CASCADE) # 혼자 해야돼서 일대다 관계여서 foreignkey로 함.
+    author=models.ForeignKey(User,on_delete=models.CASCADE) # 혼자 해야돼서 일대다 관계여서 foreignkey로 함.
+    content=models.TextField()
+    created_at=models.DateTimeField(auto_now_add=True)
+    modified_at=models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.author}::{self.content}'
+
+    def get_absolute_url(self):
+        return f'{self.post.get_absolute_url()}#comment-{self.pk}' # 현재글 이므로 해당 페이지+ #(anchor)id 이다.

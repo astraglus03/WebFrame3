@@ -1,3 +1,4 @@
+{% load socialaccount %} <!--# 이걸 해줘야 구글이라고 인지하고 가져온다.-->
 <!-- navbar 링크 -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light"> <!-- 네비게이션 바의 스타일을 지정하는 클래스, 밝은색 배경의 내비게이션 바-->
     <div class="container"> <!-- 가장 바깥쪽 컨테이너 -->
@@ -30,7 +31,7 @@
                         <a class="dropdown-item" href="/accounts/logout/">LOGOUT</a>
                     </div>
                 </li>
-                {% else  %}
+                {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
                         <i class="fa-solid fa-right-to-bracket fa-spin"></i>&nbsp; Log In</a> <!-- 동작 지점을 지정해줌 -->
@@ -54,18 +55,15 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-6"> <!-- xs, sm, md, lg -->
-                        <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="#">
-                            <i class="fa-brands fa-google fa-bounce"></i>&nbsp; Login with Google
-                        </a>
+                        <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% provider_login_url 'google' %}"> <!--구글 로그인 여러개 프로바이더 등록할경우 'google'부분만 바꾸면 됌-->
+                            <i class="fa-brands fa-google fa-bounce"></i>&nbsp; Login with Google</a>
                         <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="/accounts/login/">
-                            <i class="fa-sharp fa-regular fa-envelope fa-beat"></i>&nbsp; Login with E-mail
-                        </a>
+                            <i class="fa-sharp fa-regular fa-envelope fa-beat"></i>&nbsp; Login with Username</a>
                     </div>
 
                     <div class="col-sm-6">
                         <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="accounts/signup/">
-                            <i class="fa-solid fa-square-envelope fa-shake"></i>&nbsp; Sign up with E-mail
-                        </a>
+                            <i class="fa-solid fa-square-envelope fa-shake"></i>&nbsp; Sign up with E-mail</a>
                     </div>
                 </div>
             </div>
